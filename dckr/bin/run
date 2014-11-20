@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -o errexit
+set -o nounset
+
+# Variables
+task=${1:-default}
+test -n "${1:-}" && shift
+export DCKR_ARGS="$@"
+
+# Task is defined?
+taskfile="$DCKR_TASKS/$task"
+if ! test -r "$taskfile"; then
+  echo "Task '$task' not defined. Valid tasks are:"
+  cd "$DCKR_TASKS"
+  find -L -maxdepth 1 -type f -printf "%f\n" | sort -u
+  exit 1
+fi
+
+# Interface bound?
+while read ifc; do
+  if ! mountpoint -q "$DCKR_MNT/$ifc"; then
+    echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
+    exit 2
+  fi
+done < "$DCKR_INTERFACE"
+
+# Run
+(. "$taskfile")
+exitval="$?"
+
+# Delete all created files (although these volumes should be non-persistent)
+rm -rf /tmp/* /var/tmp/*
+
+exit "$exitval"
