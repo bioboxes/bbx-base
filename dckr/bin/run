@@ -12,8 +12,10 @@ export DCKR_ARGS="$@"
 taskfile="$DCKR_TASKS/$task"
 if ! test -r "$taskfile"; then
   echo "Task '$task' not defined. Valid tasks are:"
-  cd "$DCKR_TASKS"
-  find -L -maxdepth 1 -type f -printf "%f\n" | sort -u
+  if test -d "$DCKR_TASKS"; then
+    cd "$DCKR_TASKS"
+    find -L -maxdepth 1 -type f -printf "%f\n" | sort -u
+  fi
   exit 1
 fi
 
