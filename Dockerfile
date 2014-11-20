@@ -19,9 +19,6 @@ COPY dckr /dckr
 
 # settings
 RUN id $DCKR_USER || useradd -N -g nogroup $DCKR_USER
-# in the following line, $DCKR_USER is not allowed in Docker 1.2
-USER nobody
-# in the following line, $DCKR_MNT is not allowed in Docker 1.2
 
 # cleanup
 RUN rm -rf /tmp/* /var/tmp/*
