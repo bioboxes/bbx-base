@@ -25,7 +25,7 @@ while read ifc; do
     echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
     exit 2
   fi
-done < "$DCKR_INTERFACE"
+done < "$DCKR_BINDS"
 
 # Run
 (. "$taskfile")
