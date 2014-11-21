@@ -13,7 +13,7 @@ if test "$(echo $task | cut -c -1)" = '-'; then
   if test "$task" = '--list-var'; then
     env | grep '^DCKR_' | sort
   elif test "$task" = '--list-mount'; then
-    grep -v '^#' "$DCKR_BIND" | while read ifc; do print "$DCKR_MNT/$ifc"; done
+    grep -v '^#' "$DCKR_BIND" | while read ifc; do echo "$DCKR_MNT/$ifc"; done
   else
     echo "Undefined option '$task'" 1>&2
   fi
