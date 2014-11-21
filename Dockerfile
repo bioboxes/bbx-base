@@ -11,12 +11,11 @@ RUN apt-get -q update && apt-get upgrade -q -y -o DPkg::Options::=--force-confne
 apt-get -q clean && rm -rf /var/lib/apt/lists/*
 
 ENV DCKR_MNT /dckr/mnt
-ENV DCKR_TASKS /dckr/etc/tasks.d
-ENV DCKR_INTERFACE /dckr/etc/dockermount.conf
-
-# user UID must match UID of host shared folder, until docker supports proper user mapping
-# unpriviledged container processes are more secure when mounting host folders
+ENV DCKR_ETC /dckr/etc
+ENV DCKR_TASKS $DCKR_ETC/tasks.d
+ENV DCKR_BIND $DCKR_ETC/dockermount.conf
 ENV DCKR_USER nobody
+ENV DCKR_THREADS 1
 
 # add container functionality
 COPY dckr /dckr
