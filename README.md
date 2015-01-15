@@ -6,4 +6,4 @@ The Dockerfile and /dckr folder define an interface and enforce the binding of a
 Variables for use in container
 -----
 
-Use the environment variables which are defined in the Dockerfile in your scripts and applications. Do not use absolute paths except for mounting the host volumes to the container (this is a limitation of the docker commmand). To list available mount points and their locations, see the output of ```docker run image --list-mount```. To see an exhaustive list of defined variables and their values, see the output of ```docker run cami/base --list-var```.
+Use the environment variables which are defined in the Dockerfile in your scripts and applications. Do not use absolute paths except for mounting the host volumes to the container (this is a limitation of the docker commmand). To list available mount points and their locations, see the output of ```docker run image --list-mount```. To see an exhaustive list of defined variables and their values, see the output of ```docker run image --list-var```.
