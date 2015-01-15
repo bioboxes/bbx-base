@@ -21,13 +21,15 @@ if ! test -r "$taskfile"; then
 fi
 
 # Interface bound?
-grep -v '^#' "$DCKR_BINDCONF" |
-while read ifc; do
-  if ! mountpoint -q "$DCKR_MNT/$ifc"; then
-    echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
-    exit 2
-  fi
-done
+if test "$(echo $task | cut -c -2)" != '--'; then
+  grep -v '^#' "$DCKR_BINDCONF" |
+  while read ifc; do
+    if ! mountpoint -q "$DCKR_MNT/$ifc"; then
+      echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
+      exit 2
+    fi
+  done
+fi
 
 # Run
 (. "$taskfile")
