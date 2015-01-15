@@ -6,19 +6,8 @@ set -o nounset
 # Variables
 task=${1:-default}
 test -n "${1:-}" && shift
-export DCKR_ARGS="$@"
-
-# Argument parsing
-#if test "$(echo $task | cut -c -1)" = '-'; then
-#  if test "$task" = '--list-var'; then
-#    env | grep '^DCKR_' | sort
-#  elif test "$task" = '--list-mount'; then
-#    grep -v '^#' "$DCKR_BIND" | while read ifc; do echo "$DCKR_MNT/$ifc"; done | sort
-#  else
-#    echo "Undefined option '$task'" 1>&2
-#  fi
-#  exit 1
-#fi
+DCKR_ARGS="$@"
+export DCKR_ARGS
 
 # Task is defined?
 taskfile="$DCKR_TASKDIR/$task"
