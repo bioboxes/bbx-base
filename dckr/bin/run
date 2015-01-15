@@ -9,21 +9,21 @@ test -n "${1:-}" && shift
 export DCKR_ARGS="$@"
 
 # Argument parsing
-if test "$(echo $task | cut -c -1)" = '-'; then
-  if test "$task" = '--list-var'; then
-    env | grep '^DCKR_' | sort
-  elif test "$task" = '--list-mount'; then
-    grep -v '^#' "$DCKR_BIND" | while read ifc; do echo "$DCKR_MNT/$ifc"; done | sort
-  else
-    echo "Undefined option '$task'" 1>&2
-  fi
-  exit 1
-fi
+#if test "$(echo $task | cut -c -1)" = '-'; then
+#  if test "$task" = '--list-var'; then
+#    env | grep '^DCKR_' | sort
+#  elif test "$task" = '--list-mount'; then
+#    grep -v '^#' "$DCKR_BIND" | while read ifc; do echo "$DCKR_MNT/$ifc"; done | sort
+#  else
+#    echo "Undefined option '$task'" 1>&2
+#  fi
+#  exit 1
+#fi
 
 # Task is defined?
 taskfile="$DCKR_TASKDIR/$task"
 if ! test -r "$taskfile"; then
-  echo "Task '$task' not defined. Valid tasks are:" 1>&2
+  echo "'$task' undefined. Valid values are:" 1>&2
   if test -d "$DCKR_TASKDIR"; then
     cd "$DCKR_TASKDIR"
     find -L -maxdepth 1 -type f -printf "%f\n" | sort -u  1>&2
