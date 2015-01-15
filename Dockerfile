@@ -10,13 +10,26 @@ VOLUME ["/tmp", "/var/tmp", "/dckr/cache"]
 RUN apt-get -q update && apt-get upgrade -q -y -o DPkg::Options::=--force-confnew && \
 apt-get -q clean && rm -rf /var/lib/apt/lists/*
 
-ENV DCKR_MNT /dckr/mnt  # place to mount host folders into container
-ENV DCKR_ETC /dckr/etc  # configuration files specific to the interface framework
-ENV DCKR_CACHEDIR /dckr/cache  # to be used as persistent storage, can be linked to named volume
-ENV DCKR_TASKDIR $DCKR_ETC/tasks.d  # place task definitions here
-ENV DCKR_BINDCONF $DCKR_ETC/dockermount.conf  # define manditory mount points
-ENV DCKR_USER nobody  # optional user to be used for running programs in the container (improves security)
-ENV DCKR_THREADS 1  # number of threads available to the container (autodetection possible)
+# place to mount host folders into container
+ENV DCKR_MNT /dckr/mnt
+
+# configuration files specific to the interface framework
+ENV DCKR_ETC /dckr/etc
+
+# to be used as persistent storage, can be linked to named volume
+ENV DCKR_CACHEDIR /dckr/cache
+
+# place task definitions here
+ENV DCKR_TASKDIR $DCKR_ETC/tasks.d
+
+# define manditory mount points
+ENV DCKR_BINDCONF $DCKR_ETC/dockermount.conf
+
+# optional user to be used for running programs in the container (for better security)
+ENV DCKR_USER nobody
+
+# number of threads available to the container (autodetection possible)
+ENV DCKR_THREADS 1
 
 # add container functionality
 COPY dckr /dckr
