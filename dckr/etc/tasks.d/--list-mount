@@ -1,1 +1,1 @@
-grep -v '^#' "$DCKR_BIND" | while read ifc; do echo "$DCKR_MNT/$ifc"; done | sort
+grep -v '^#' "$DCKR_BINDCONF" | while read ifc; do echo "$DCKR_MNT/$ifc"; done | sort
