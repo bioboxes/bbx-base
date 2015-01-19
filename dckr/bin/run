@@ -35,7 +35,4 @@ fi
 (. "$taskfile")
 exitval="$?"
 
-# Delete all created files (although these volumes should be non-persistent)
-rm -rf /tmp/* /var/tmp/*
-
 exit "$exitval"
