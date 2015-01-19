@@ -4,7 +4,7 @@ MAINTAINER Johannes Dröge, johannes.droege@uni-duesseldorf.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # anonymous volumes
-VOLUME ["/tmp", "/var/tmp", "/dckr/cache"]
+VOLUME ["/tmp", "/var/tmp"]
 
 # upgrade to latest debian packages
 RUN apt-get -q update && apt-get upgrade -q -y -o DPkg::Options::=--force-confnew && \
@@ -34,11 +34,14 @@ ENV DCKR_THREADS 1
 # add container functionality
 COPY dckr /dckr
 
-# settings
+# create cache directory
+RUN mkdir /dckr/cache
+
+# create optional default user
 RUN id $DCKR_USER || useradd -N -g nogroup $DCKR_USER
 
-# cleanup
-RUN rm -rf /tmp/* /var/tmp/*
+# cleanup all temporary data
+RUN rm -rf /tmp/* /var/tmp/*; test -d "$TMPDIR" && rm -rf "$TMPDIR"/*
 
 # default process on container startup
 ENTRYPOINT ["/dckr/bin/run"]
