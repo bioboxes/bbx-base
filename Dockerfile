@@ -41,7 +41,7 @@ RUN mkdir /dckr/cache
 RUN id $DCKR_USER || useradd -N -g nogroup $DCKR_USER
 
 # cleanup all temporary data
-RUN rm -rf /tmp/* /var/tmp/*; test -d "$TMPDIR" && rm -rf "$TMPDIR"/*
+RUN rm -rf /tmp/* /var/tmp/*; test -d "$TMPDIR" && rm -rf "$TMPDIR"/* || set ?=0
 
 # default process on container startup
 ENTRYPOINT ["/dckr/bin/run"]
