@@ -10,7 +10,7 @@ test -n "${1:-}" && shift
 BBX_ARGS="$@"
 export BBX_ARGS
 
-BBX_CPUS="$(cpucount)"
+BBX_CPUS="${$BBX_CPUS-$(cpucount)}"
 
 # make executables and shell functions accessible
 PATH="$BBX_BINDIR:$PATH"
