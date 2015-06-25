@@ -6,42 +6,45 @@ ENV DEBIAN_FRONTEND noninteractive
 # anonymous volumes
 VOLUME ["/tmp", "/var/tmp"]
 
-# upgrade to latest debian packages
-RUN apt-get -q update && apt-get upgrade -q -y -o DPkg::Options::=--force-confnew && \
-apt-get -q clean && rm -rf /var/lib/apt/lists/*
+# upgrade to latest debian packages (avoid upgrade: https://docs.docker.com/articles/dockerfile_best-practices/)
+# RUN apt-get -q update && apt-get upgrade -q -y -o DPkg::Options::=--force-confnew && \
+# apt-get -q clean && rm -rf /var/lib/apt/lists/*
 
-# place to mount host folders into container
-ENV DCKR_MNT /dckr/mnt
+# biobox base directory
+ENV BBX_BASE /bbx
 
-# configuration files specific to the interface framework
-ENV DCKR_ETC /dckr/etc
+# location of container executables
+ENV BBX_BINDIR ${BBX_BASE}/bin
 
-# to be used as persistent storage, can be linked to named volume
-ENV DCKR_CACHEDIR /dckr/cache
+# location of host mounts in the container
+ENV BBX_MNTDIR ${BBX_BASE}/mnt
 
-# place task definitions here
-ENV DCKR_TASKDIR $DCKR_ETC/tasks.d
+# container configuration files
+ENV BBX_ETCDIR ${BBX_BASE}/etc
 
-# define manditory mount points
-ENV DCKR_BINDCONF $DCKR_ETC/dockermount.conf
+# persistent storage, can be linked to named volume
+ENV BBX_CACHEDIR ${BBX_MNTDIR}/cache
 
-# optional user to be used for running programs in the container (for better security)
-ENV DCKR_USER nobody
+# location for task definitions (simple sh syntax)
+ENV BBX_TASKDIR ${BBX_ETCDIR}/tasks.d
 
-# number of threads available to the container (autodetection possible)
-ENV DCKR_THREADS 1
+# manditory mount point definitions
+ENV BBX_MNTCONF ${BBX_ETCDIR}/mount.conf
 
 # add container functionality
-COPY dckr /dckr
+COPY bbx /bbx
 
-# create cache directory
-RUN mkdir /dckr/cache
+# create cache directory (in case it's not mounted)
+RUN mkdir ${BBX_CACHEDIR}
 
 # create optional default user
-RUN id $DCKR_USER || useradd -N -g nogroup $DCKR_USER
+ENV BBX_RUNUSER nobody
+ENV BBX_RUNGROUP nogroup
+RUN groupadd ${BBX_RUNGROUP} || echo "${BBX_RUNGROUP} exists."
+RUN useradd -N -g ${BBX_RUNGROUP} ${BBX_RUNUSER} || echo "${BBX_RUNUSER} exists."
 
 # cleanup all temporary data
 RUN rm -rf /tmp/* /var/tmp/*; test -d "$TMPDIR" && rm -rf "$TMPDIR"/* || set ?=0
 
 # default process on container startup
-ENTRYPOINT ["/dckr/bin/run"]
+ENTRYPOINT ["${BBX_BINDIR}/run"]
