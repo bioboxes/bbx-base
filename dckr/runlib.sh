@@ -13,7 +13,7 @@ isoption() {
 }
 
 listtasks() {
-  if test -d "$1"; then
-    (cd "$1" && find -L -maxdepth 1 -type f -printf "%f\n" | sort -u  1>&2)
+  if test -d "$BBX_TASKDIR"; then
+    (cd "$BBX_TASKDIR" && find -L -maxdepth 1 -type f -printf "%f\n" | sort -u  1>&2)
   fi
 }
