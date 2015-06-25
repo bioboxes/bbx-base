@@ -9,7 +9,8 @@ test -n "${1:-}" && shift
 BBX_ARGS="$@"
 export BBX_ARGS
 
-# import shell functions
+# make executables and shell functions accessible
+PATH="$BBX_BINDIR:$PATH"
 . "$BBX_LIBDIR/runlib.sh"
 
 # if task not defined, list task names and quit
@@ -24,6 +25,9 @@ fi
 if ! isoption "$task"; then
   mountcheck 1>&2
 fi
+
+# parse bioboxes YAML parameters
+parseyaml
 
 # Run
 (. "$taskfile")
