@@ -13,7 +13,7 @@ VOLUME ["/tmp", "/var/tmp"]
 # biobox base directory
 ENV BBX_BASE /bbx
 
-# location of container executables
+# location for container executables
 ENV BBX_BINDIR ${BBX_BASE}/bin
 
 # location of host mounts in the container
@@ -21,6 +21,9 @@ ENV BBX_MNTDIR ${BBX_BASE}/mnt
 
 # container configuration files
 ENV BBX_ETCDIR ${BBX_BASE}/etc
+
+# location for container shared code
+ENV BBX_LIBDIR ${BBX_BASE}/lib
 
 # persistent storage, can be linked to named volume
 ENV BBX_CACHEDIR ${BBX_MNTDIR}/cache
