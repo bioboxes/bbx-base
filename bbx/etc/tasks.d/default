@@ -1,3 +1,3 @@
 ## here you should call the task(s) that you want to run as default using the following syntax (preferable to a symbolic link)
-# . "$DCKR_TASKS"/mytask1
-echo 'Default task is empty' 1>&2
+# . "$BBX_TASKDIR"/mytask1
+echo 'Default task is empty.'

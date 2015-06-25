@@ -3,11 +3,14 @@
 set -o errexit
 set -o nounset
 
-# variables
+# set dynamic variables
 task=${1:-default}
+
 test -n "${1:-}" && shift
 BBX_ARGS="$@"
 export BBX_ARGS
+
+BBX_CPUS="$(cpucount)"
 
 # make executables and shell functions accessible
 PATH="$BBX_BINDIR:$PATH"
@@ -17,7 +20,7 @@ PATH="$BBX_BINDIR:$PATH"
 taskfile="$BBX_TASKDIR/$task"
 if ! test -r "$taskfile"; then
   echo "'$task' undefined. Valid values are:" 1>&2
-  listtasks 1>&2
+  tasklist 1>&2
   exit 1
 fi
 
@@ -29,8 +32,5 @@ fi
 # parse bioboxes YAML parameters
 parseyaml
 
-# Run
-(. "$taskfile")
-exitval="$?"
-
-exit "$exitval"
+# run
+exec sh "$taskfile"

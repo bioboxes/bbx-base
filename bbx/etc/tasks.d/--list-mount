@@ -1,0 +1,1 @@
+grep -v '^#' "$BBX_MNTCONF" | while read ifc; do echo "$BBX_MNTDIR/$ifc"; done | sort
