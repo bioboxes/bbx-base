@@ -2,7 +2,7 @@ mountcheck() {
   grep -v '^#' "$BBX_MNTCONF" |
   while read ifc; do
     if ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
-      echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
+      echo "Abort, interface '$DCKR_MNT/$ifc' not bound."
       return 1
     fi
   done
