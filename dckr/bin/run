@@ -3,32 +3,26 @@
 set -o errexit
 set -o nounset
 
-# Variables
+# variables
 task=${1:-default}
 test -n "${1:-}" && shift
-DCKR_ARGS="$@"
-export DCKR_ARGS
+BBX_ARGS="$@"
+export BBX_ARGS
 
-# Task is defined?
-taskfile="$DCKR_TASKDIR/$task"
+# import shell functions
+. "$BBX_LIBDIR/runlib.sh"
+
+# if task not defined, list task names and quit
+taskfile="$BBX_TASKDIR/$task"
 if ! test -r "$taskfile"; then
   echo "'$task' undefined. Valid values are:" 1>&2
-  if test -d "$DCKR_TASKDIR"; then
-    cd "$DCKR_TASKDIR"
-    find -L -maxdepth 1 -type f -printf "%f\n" | sort -u  1>&2
-  fi
+  listtasks 1>&2
   exit 1
 fi
 
-# Interface bound?
-if test "$(echo $task | cut -c -2)" != '--'; then
-  grep -v '^#' "$DCKR_BINDCONF" |
-  while read ifc; do
-    if ! mountpoint -q "$DCKR_MNT/$ifc"; then
-      echo "Abort, interface '$DCKR_MNT/$ifc' not bound." 1>&2
-      exit 2
-    fi
-  done
+# if mandatory mount is missing then quit with error
+if ! isoption "$task"; then
+  mountcheck 1>&2
 fi
 
 # Run
