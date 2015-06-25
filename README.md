@@ -24,7 +24,7 @@ A container can do different things and the here we call each basic thing a task
 
 An init option is defined to be any alphanumerical string beginning with a dash (`-`) and following the docker image name. The implementation of init options is currently almost identical to the tasks. There are some pre-defined options such as `docker run -t -i image --shell` (which drops you to a root shell, not the additional docker options which are necessary). To list mandatory mount points and their locations, see the output of `docker run image --list-mount`. to ease the development. To list available mount points and their locations, see the output of `docker run image --list-mount`.
 
-### Biobox YAML parameters
+### Bioboxes YAML parameters
 
 The recent bioboxes.org specifications define the input to be in YAML format. Common types of applications can share an interface definition in form of a YAML definition. This structured approach has the advantage that arbitrarily complex interfaces can be defined, re-implemented and validated automatically. However, for any particular biobox implementation, it increases the complexity because the YAML file has to be parsed inside the container.
 
