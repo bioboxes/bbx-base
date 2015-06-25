@@ -22,7 +22,7 @@ A container can do different things and the here we call each basic thing a task
 
 ### Init options
 
-An init option is defined to be any alphanumerical string beginning with a dash (`-`) and following the docker image name. The implementation of init options is currently almost identical to the tasks. There are some pre-defined options such as `docker run -t -i image --shell` (which drops you to a root shell, not the additional docker options which are necessary). To list mandatory mount points and their locations, see the output of `docker run image --list-mount`. to ease the development. To list available mount points and their locations, see the output of `docker run image --list-mount`.
+An init option is defined to be any alphanumerical string beginning with two dashes (`--`) and following the docker image name. The implementation of init options is currently almost identical to the tasks. There are some pre-defined options such as `docker run -t -i image --shell` (which drops you to a root shell, not the additional docker options which are necessary). To list mandatory mount points and their locations, see the output of `docker run image --list-mount`. to ease the development. To list available mount points and their locations, see the output of `docker run image --list-mount`.
 
 ### Bioboxes YAML parameters
 
