@@ -11,3 +11,9 @@ mountcheck() {
 isoption() {
   [ "$(echo "$1" | cut -c -2)" = '--' ]
 }
+
+listtasks() {
+  if test -d "$1"; then
+    (cd "$1" && find -L -maxdepth 1 -type f -printf "%f\n" | sort -u  1>&2)
+  fi
+}
