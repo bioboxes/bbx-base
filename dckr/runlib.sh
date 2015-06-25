@@ -8,3 +8,6 @@ mountcheck() {
   done
 }
 
+isoption() {
+  [ "$(echo "$1" | cut -c -2)" = '--' ]
+}
