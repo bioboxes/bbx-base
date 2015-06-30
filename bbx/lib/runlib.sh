@@ -1,4 +1,4 @@
-mountcheck() {
+bbx_mountcheck() {
   grep -v '^#' "$BBX_MNTCONF" |
   while read ifc; do
     if ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
@@ -12,7 +12,7 @@ isoption() {
   [ "$(echo "$1" | cut -c -2)" = '--' ]
 }
 
-tasklist() {
+bbx_tasklist() {
   if test -d "$BBX_TASKDIR"; then
     (cd "$BBX_TASKDIR" && find -L -maxdepth 1 -type f -printf "%f\n" | sort -u)
   fi
@@ -27,4 +27,9 @@ cpucount() {
   bc |
   tr -d -c '1' |
   wc -c
+}
+
+
+bbx_parse_yaml() {
+  eval $(yaml-parser "$BBX_MNTDIR/input/biobox.yaml" 'export bbx')
 }

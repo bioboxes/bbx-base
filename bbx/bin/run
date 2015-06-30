@@ -3,34 +3,33 @@
 set -o errexit
 set -o nounset
 
-# set dynamic variables
-task=${1:-default}
-
-test -n "${1:-}" && shift
-BBX_ARGS="$@"
-export BBX_ARGS
-
-BBX_CPUS="${$BBX_CPUS-$(cpucount)}"
-
 # make executables and shell functions accessible
 PATH="$BBX_BINDIR:$PATH"
 . "$BBX_LIBDIR/runlib.sh"
+
+# set dynamic variables
+task=${1:-default}
+test -n "${1:-}" && shift
+BBX_ARGS="$@"
+export BBX_ARGS
+BBX_CPUS="${BBX_CPUS:-$(cpucount)}"
+export BBX_CPUS
 
 # if task not defined, list task names and quit
 taskfile="$BBX_TASKDIR/$task"
 if ! test -r "$taskfile"; then
   echo "'$task' undefined. Valid values are:" 1>&2
-  tasklist 1>&2
+  bbx_tasklist 1>&2
   exit 1
 fi
 
 # if mandatory mount is missing then quit with error
 if ! isoption "$task"; then
-  mountcheck 1>&2
+  bbx_mountcheck 1>&2
 fi
 
 # parse bioboxes YAML parameters
-parseyaml
+bbx_parse_yaml 1>&2
 
 # run
 exec sh "$taskfile"
