@@ -1,4 +1,4 @@
-# A simple bioboxes base image for Docker
+# A simple bioboxes base image for Docker (EXPERIMENTAL!)
 
 ## Description
 
@@ -6,7 +6,8 @@ The image can be derived to implement bioboxes and provides the following functi
 
 * a lightweight and stable Debian environment
 * a parser for the bioboxes YAML input file and easy access of the passed parameters
-* a common code base for biobox implementations
+* convenience scripts
+* a common base image for biobox implementations to facilitate debugging, support and image size
 * definition of environment variables for your scripts in order to
  * avoid hard-coded file paths
  * provide better resource management
@@ -26,8 +27,26 @@ An init option is defined to be any alphanumerical string beginning with two das
 
 ### Bioboxes YAML parameters
 
-The recent bioboxes.org specifications define the input to be in YAML format. Common types of applications can share an interface definition in form of a YAML definition. This structured approach has the advantage that arbitrarily complex interfaces can be defined, re-implemented and validated automatically. However, for any particular biobox implementation, it increases the complexity because the YAML file has to be parsed inside the container.
+The recent bioboxes.org specifications define the input to be in YAML format. Common types of applications can share an interface definition in form of a YAML definition. This structured approach has the advantage that arbitrarily complex interfaces can be defined, re-implemented and validated automatically. However, for any particular biobox implementation, it increases the complexity because the YAML file has to be parsed inside the container. If it is suitible for the biobox implementor, YAML options which have been passed to the container as defined by the bioboxes specification can be accessed as environment variables. The variables can be listed with the init option `--list-input`.
+
 
 ### Environment variables
 
-Environment variables can be used to avoid hardcoding paths in the container (in case they might change) and to access information other than the Biobox parameters, which might require additional code. Most of these variables are defined in the Dockerfile but some might be added dynamically by the init run system. Currently, the best way to explore all available environment variables is by use of the init option `docker run image --list-var`.
+Environment variables can be used to avoid hardcoding paths in the container (in case they might change) and to access information other than the Biobox parameters, which might require additional code. Most of these variables are defined in the Dockerfile but  some might be added dynamically by the init run system. Currently, the best way to explore all available environment variables is by use of the init option `docker run image --list-var`.
+
+## Using the base image
+
+* For testing your software or exploring the base image, just run
+     docker run docker run -i -t fungs/bbx-base --shell
+
+* To implement a biobox
+ 1. Derive from the base image in a Dockerfile, use the syntax `FROM fungs/bbx-base`
+ 2. Copy your software into the container, e.g. by any of the following methods
+  * `COPY yoursoftware /opt/yoursoftware`
+  * `RUN dpkg -i yoursoftware.deb`
+  * `RUN apt-get install yoursoftware`
+ 3. Write the command line to run into a text file named 'mytask' and copy it to `$BBX_TASKDIR/`
+
+* Compile and run your biobox
+     docker build -t="myuser/mybiobox" folder_containing_Dockerfile
+     docker run --bioboxes-docker-options-and-mounts myuser/mybiobox mytask
