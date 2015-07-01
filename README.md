@@ -42,11 +42,11 @@ Environment variables can be used to avoid hardcoding paths in the container (in
 * To implement a biobox
  1. Derive from the base image in a Dockerfile, use the syntax `FROM fungs/bbx-base`
  2. Copy your software into the container, e.g. by any of the following methods
-  * `COPY yoursoftware /opt/yoursoftware`
-  * `RUN dpkg -i yoursoftware.deb`
-  * `RUN apt-get install yoursoftware`
+    * `COPY yoursoftware /opt/yoursoftware`
+    * `RUN dpkg -i yoursoftware.deb`
+    * `RUN apt-get install yoursoftware`
  3. Write the command line to run into a text file named 'mytask' and copy it to `$BBX_TASKDIR/`
 
 * Compile and run your biobox
-     docker build -t="myuser/mybiobox" folder_containing_Dockerfile
-     docker run --bioboxes-docker-options-and-mounts myuser/mybiobox mytask
+  * `docker build -t="myuser/mybiobox" folder_containing_Dockerfile`
+  * `docker run --bioboxes-docker-options-and-mounts myuser/mybiobox mytask`
