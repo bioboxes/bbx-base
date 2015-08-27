@@ -37,10 +37,10 @@ Environment variables can be used to avoid hardcoding paths in the container (in
 ## Using the base image
 
 * For testing your software or exploring the base image, just run
-  * `docker run docker run -i -t fungs/bbx-base --shell`
+  * `docker run -i -t fungs/bbx-base --shell`
 
 * To implement a biobox
- 1. Derive from the base image in a Dockerfile, use the syntax `FROM fungs/bbx-base`
+ 1. Derive from the base image in a Dockerfile, use the syntax `FROM bioboxes/bbx-base`
  2. Copy your software into the container, e.g. by any of the following methods
     * `COPY yoursoftware /opt/yoursoftware`
     * `RUN dpkg -i yoursoftware.deb`
@@ -49,4 +49,4 @@ Environment variables can be used to avoid hardcoding paths in the container (in
 
 * Compile and run your biobox
   * `docker build -t="myuser/mybiobox" folder_containing_Dockerfile`
-  * `docker run --bioboxes-docker-options-and-mounts myuser/mybiobox mytask`
+  * `docker run --all-the-bioboxes-docker-options-and-mounts myuser/mybiobox mytask`
