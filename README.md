@@ -1,4 +1,4 @@
-# A simple bioboxes base image for Docker (EXPERIMENTAL!)
+# A simple bioboxes base image for Docker
 
 ## Description
 
