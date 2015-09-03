@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 set -o errexit
 set -o nounset
@@ -33,3 +33,4 @@ bbx_parse_yaml 1>&2
 
 # run
 exec sh "$taskfile"
+

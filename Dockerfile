@@ -6,12 +6,6 @@ ENV DEBIAN_FRONTEND noninteractive
 # anonymous volumes
 VOLUME ["/tmp", "/var/tmp"]
 
-# upgrade to latest debian packages (avoid upgrade: https://docs.docker.com/articles/dockerfile_best-practices/)
-RUN apt-get -q update && apt-get install -q -y -o DPkg::Options::=--force-confnew \
-bc \
-python-yaml \
-&& apt-get -q clean && rm -rf /var/lib/apt/lists/*
-
 # biobox base directory
 ENV BBX_BASE /bbx
 
@@ -36,21 +30,28 @@ ENV BBX_TASKDIR ${BBX_ETCDIR}/tasks.d
 # manditory mount point definitions
 ENV BBX_MNTCONF ${BBX_ETCDIR}/mount.conf
 
+# location for user-added programs
+ENV BBX_OPTDIR /opt
+
 # add container functionality
-COPY bbx /bbx
+COPY bbx ${BBX_BASE}
+
+# upgrade to latest debian packages (avoid upgrade: https://docs.docker.com/articles/dockerfile_best-practices/)
+RUN "$BBX_BINDIR"/dockerfile-install-packages bc python-yaml
 
 # create mandatory directories
 RUN [ -d "$BBX_MNTDIR" ] || mkdir "$BBX_MNTDIR"
 RUN [ -d "$BBX_CACHEDIR" ] || mkdir "$BBX_CACHEDIR"
 
 # create optional default user
-ENV BBX_RUNUSER bbxuser
-ENV BBX_RUNGROUP bbxgroup
+ENV BBX_RUNUSER bbx
+ENV BBX_RUNGROUP bbx
 RUN groupadd "$BBX_RUNGROUP" || echo "$BBX_RUNGROUP exists."
 RUN useradd -N -g "$BBX_RUNGROUP" "${BBX_RUNUSER}" || echo "$BBX_RUNUSER exists."
 
 # cleanup all temporary data
-RUN rm -rf /tmp/* /var/tmp/*; test -d "$TMPDIR" && rm -rf "$TMPDIR"/* || set ?=0
+RUN "$BBX_BINDIR"/dockerfile-clean-tmpdata
 
 # default process on container startup (no support for infile variable substitution in Dockerfile)
 ENTRYPOINT ["/bbx/bin/run"]
+

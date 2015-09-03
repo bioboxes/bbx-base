@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -o errexit
+set -o nounset
+
+apt-get -q update && apt-get install -q -y -o DPkg::Options::=--force-confnew $@
+apt-get -q clean
+rm -rf /var/lib/apt/lists/*
+

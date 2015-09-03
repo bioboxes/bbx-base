@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -o errexit
+set -o nounset
+
+rm -rf "${TMPDIR:-/tmp}"/* /var/tmp/*
+
+exit 0
+
