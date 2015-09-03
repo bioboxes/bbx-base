@@ -1,1 +1,1 @@
-env | grep '^BBX_' | sort
+env | grep -i '^BBX_' | sort
