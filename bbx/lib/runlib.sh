@@ -1,11 +1,13 @@
 bbx_mountcheck() {
+  bbx_mountcheck_retval=0
   grep -v '^#' "$BBX_MNTCONF" |
   while read ifc; do
-    if ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
-      echo "Abort, interface '$BBX_MNTDIR/$ifc' not bound."
-      return 1
+    if [ -n "$ifc" ] && ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
+      echo "Warning: unbound interface '$BBX_MNTDIR/$ifc'" 1>&2
+      bbx_mountcheck_retval=1
     fi
   done
+  return "$bbx_mountcheck_retval"
 }
 
 isoption() {
@@ -13,12 +15,12 @@ isoption() {
 }
 
 bbx_tasklist() {
-  if test -d "$BBX_TASKDIR"; then
+  if [ -d "$BBX_TASKDIR" ]; then
     (cd "$BBX_TASKDIR" && find -L -maxdepth 1 -type f -printf "%f\n" | sort -u)
   fi
 }
 
-cpucount() {
+cpucount() {  # TODO: check if it works everywhere, there seems to be a problem on some systems
   grep -m 1 '^Cpus_allowed:' /proc/self/status |
   cut -f 2 |
   tr -d ',' |
@@ -31,5 +33,11 @@ cpucount() {
 
 
 bbx_parse_yaml() {
-  eval $(yaml-parser "$BBX_MNTDIR/input/biobox.yaml" 'export bbx')
+  if [ -r "$BBX_MNTDIR/input/biobox.yaml" ]; then
+    eval $(yaml-parser "$BBX_MNTDIR/input/biobox.yaml" 'export bbx')
+  else
+    echo 'Warning: biobox.yaml not accessible' 1>&2
+    return 1
+  fi
 }
+
