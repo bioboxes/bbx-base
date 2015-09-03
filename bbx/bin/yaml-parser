@@ -8,7 +8,7 @@ import sys
 try:
   import yaml
 except ImportError:
-  sys.stderr.write("YAML Python module is missing, cannot parse YAML.")
+  sys.stderr.write("YAML Python module is missing, cannot parse YAML.\n")
   sys.exit(2)
   
 filename = sys.argv[1]
