@@ -1,8 +1,8 @@
 bbx_mountcheck() {
   bbx_mountcheck_retval=0
-  grep -v '^#' "$BBX_MNTCONF" |
+  grep -v -e '^#' -e '^$' "$BBX_MNTCONF" |
   while read ifc; do
-    if [ -n "$ifc" ] && ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
+    if ! mountpoint -q "$BBX_MNTDIR/$ifc"; then
       echo "Warning: unbound interface '$BBX_MNTDIR/$ifc'" 1>&2
       bbx_mountcheck_retval=1
     fi
