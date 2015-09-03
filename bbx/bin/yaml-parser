@@ -9,7 +9,7 @@ try:
   import yaml
 except ImportError:
   sys.stderr.write("YAML Python module is missing, cannot parse YAML.")
-  sys.exit(1)
+  sys.exit(2)
   
 filename = sys.argv[1]
 prefix = sys.argv[2]
@@ -34,3 +34,5 @@ try:
     serialize(data, prefix)
 except IOError:
   sys.stderr.write("Cannot read YAML input file '%s'\n" % filename)
+  sys.exit(1)
+
