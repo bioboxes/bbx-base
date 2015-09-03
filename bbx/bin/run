@@ -9,7 +9,7 @@ PATH="$BBX_BINDIR:$PATH"
 
 # set dynamic variables
 task=${1:-default}
-test -n "${1:-}" && shift
+[ -n "${1:-}" ] && shift
 BBX_ARGS="$@"
 export BBX_ARGS
 BBX_CPUS="${BBX_CPUS:-$(cpucount)}"
@@ -17,7 +17,7 @@ export BBX_CPUS
 
 # if task not defined, list task names and quit
 taskfile="$BBX_TASKDIR/$task"
-if ! test -r "$taskfile"; then
+if ! [ -r "$taskfile" ]; then
   echo "'$task' undefined. Valid values are:" 1>&2
   bbx_tasklist 1>&2
   exit 1
@@ -25,11 +25,11 @@ fi
 
 # if mandatory mount is missing then quit with error
 if ! isoption "$task"; then
-  bbx_mountcheck 1>&2
+  bbx_mountcheck 1>&2 || set ?=0  # continue after warning
 fi
 
 # parse bioboxes YAML parameters
-bbx_parse_yaml 1>&2
+bbx_parse_yaml 1>&2 || set ?=0 # continue after warning
 
 # run
 exec sh "$taskfile"
