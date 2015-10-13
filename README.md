@@ -44,7 +44,7 @@ Environment variables can be used to avoid hardcoding paths in the container (in
  2. Copy your software into the container, e.g. by any of the following methods
     * `COPY yoursoftware /opt/yoursoftware`
     * `RUN dpkg -i yoursoftware.deb`
-    * `RUN apt-get install yoursoftware`
+    * `RUN ${BBX_BINDIR}/dockerfile-install-packages yoursoftware`
  3. Write the command line to run into a text file named 'mytask' and copy it to `$BBX_TASKDIR/`
 
 * Compile and run your biobox
