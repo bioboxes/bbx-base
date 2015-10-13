@@ -31,6 +31,8 @@ fi
 # parse bioboxes YAML parameters
 bbx_parse_yaml 1>&2 || set ?=0 # continue after warning
 
+# ensure existing cache dir
+mkdir -p "$BBX_CACHEDIR"
+
 # run
 exec sh "$taskfile"
-
