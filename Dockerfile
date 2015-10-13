@@ -40,8 +40,7 @@ COPY bbx ${BBX_BASE}
 RUN "$BBX_BINDIR"/dockerfile-install-packages bc python-yaml
 
 # create mandatory directories
-RUN [ -d "$BBX_MNTDIR" ] || mkdir "$BBX_MNTDIR"
-RUN [ -d "$BBX_CACHEDIR" ] || mkdir "$BBX_CACHEDIR"
+RUN mkdir -p "$BBX_MNTDIR"
 
 # create optional default user
 ENV BBX_RUNUSER bbx
