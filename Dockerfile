@@ -24,6 +24,9 @@ ENV BBX_LIBDIR ${BBX_BASE}/lib
 # persistent storage, can be linked to named volume
 ENV BBX_CACHEDIR ${BBX_MNTDIR}/cache
 
+# location for debug files
+ENV BBX_DBGDIR ${BBX_MNTDIR}/cache
+
 # location for task definitions (simple sh syntax)
 ENV BBX_TASKDIR ${BBX_ETCDIR}/tasks.d
 
